@@ -170,7 +170,7 @@ public class PedidoBordadoCabeceraController extends AbstractController<PedidoBo
 	
 	public void crearPedidoDetalle() {
 		pedidoBordadoCabecera.setPcaFecha(new Date());
-		pedidoBordadoSelecccion.setPedCodigo(indice);
+		pedidoBordadoSelecccion.setPedCodigo(indice);//COMENTARIO
 		pedidoBordadoSelecccion.setPcaCodigo(pedidoBordadoCabecera);
 		pedidoBordadoSelecccion.setPedNombreBordado(pedidoBordadoSelecccion.getPedNombreBordado().toUpperCase());
 		pedidoBordadoSelecccion.setPed_observaciones(pedidoBordadoSelecccion.getPed_observaciones().toUpperCase());
