@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidoBordadoCabeceraViewDlg" widgetVar="PedidoBordadoCabeceraViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewPedidoBordadoCabeceraTitle}" closeOnEscape="true">
+
+            <h:form id="PedidoBordadoCabeceraViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{pedidoBordadoCabeceraController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_pcaCodigo}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.pcaCodigo}" title="#{myBundle.ViewPedidoBordadoCabeceraTitle_pcaCodigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_pcaFecha}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.pcaFecha}" title="#{myBundle.ViewPedidoBordadoCabeceraTitle_pcaFecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_pcaFechaEntrega}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.pcaFechaEntrega}" title="#{myBundle.ViewPedidoBordadoCabeceraTitle_pcaFechaEntrega}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_pcaTotal}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.pcaTotal}" title="#{myBundle.ViewPedidoBordadoCabeceraTitle_pcaTotal}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_borCodigo}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.borCodigo.borCodigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_cliCodigo}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.cliCodigo.cliCodigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewPedidoBordadoCabeceraLabel_disCodigo}"/>
+                        <h:outputText value="#{pedidoBordadoCabeceraController.selected.disCodigo.disCodigo}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('PedidoBordadoCabeceraViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

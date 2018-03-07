@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ClienteEditDlg" widgetVar="ClienteEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditClienteTitle}" closeOnEscape="true">
+
+            <h:form id="ClienteEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{clienteController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditClienteLabel_cliCodigo}" for="cliCodigo" />
+                        <h:outputText id="cliCodigo" value="#{clienteController.selected.cliCodigo}" />
+
+                        <p:outputLabel value="#{myBundle.EditClienteLabel_cliFcaducado}" for="cliFcaducado" />
+                        <p:calendar id="cliFcaducado" pattern="MM/dd/yyyy" value="#{clienteController.selected.cliFcaducado}" title="#{myBundle.EditClienteTitle_cliFcaducado}" required="true" requiredMessage="#{myBundle.EditClienteRequiredMessage_cliFcaducado}" showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditClienteLabel_perCodigo}" for="perCodigo" />
+                        <p:selectOneMenu id="perCodigo" value="#{clienteController.selected.perCodigo}" required="true" requiredMessage="#{myBundle.EditClienteRequiredMessage_perCodigo}" converter="personaConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{personaController.items}"
+                                           var="perCodigoItem"
+                                           itemValue="#{perCodigoItem}"
+                                           itemLabel="#{perCodigoItem.perCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{clienteController.save}" value="#{myBundle.Save}" update="display,:ClienteListForm:datalist,:ClienteListForm:ClienteDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ClienteEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('ClienteEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

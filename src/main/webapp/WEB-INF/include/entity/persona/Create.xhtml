@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonaCreateDlg" widgetVar="PersonaCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreatePersonaTitle}" closeOnEscape="true">
+
+            <h:form id="PersonaCreateForm">
+
+                <h:panelGroup id="display" rendered="#{personaController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perNombre}" for="perNombre" />
+                        <p:inputTextarea rows="4" cols="30" id="perNombre" value="#{personaController.selected.perNombre}" title="#{myBundle.CreatePersonaTitle_perNombre}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perNombre}"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perApellido}" for="perApellido" />
+                        <p:inputTextarea rows="4" cols="30" id="perApellido" value="#{personaController.selected.perApellido}" title="#{myBundle.CreatePersonaTitle_perApellido}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perApellido}"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perTelefono}" for="perTelefono" />
+                        <p:inputTextarea rows="4" cols="30" id="perTelefono" value="#{personaController.selected.perTelefono}" title="#{myBundle.CreatePersonaTitle_perTelefono}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perTelefono}"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perDireccion}" for="perDireccion" />
+                        <p:inputTextarea rows="4" cols="30" id="perDireccion" value="#{personaController.selected.perDireccion}" title="#{myBundle.CreatePersonaTitle_perDireccion}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perDireccion}"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perEmail}" for="perEmail" />
+                        <p:inputTextarea rows="4" cols="30" id="perEmail" value="#{personaController.selected.perEmail}" title="#{myBundle.CreatePersonaTitle_perEmail}" />
+
+                        <p:outputLabel value="#{myBundle.CreatePersonaLabel_perFcaducado}" for="perFcaducado" />
+                        <p:calendar id="perFcaducado" pattern="MM/dd/yyyy" value="#{personaController.selected.perFcaducado}" title="#{myBundle.CreatePersonaTitle_perFcaducado}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perFcaducado}" showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personaController.saveNew}" value="#{myBundle.Save}" update="display,:PersonaListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PersonaCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('PersonaCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

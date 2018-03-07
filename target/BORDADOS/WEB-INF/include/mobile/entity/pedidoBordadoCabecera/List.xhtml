@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoBordadoCabeceraListPage">
+        <pm:header title="#{myBundle.ListPedidoBordadoCabeceraTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":PedidoBordadoCabeceraCreatePage:PedidoBordadoCabeceraCreateForm" actionListener="#{pedidoBordadoCabeceraController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoCabeceraCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoBordadoCabeceraListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{pedidoBordadoCabeceraController.items}"
+                             var="item"
+                             rowKey="#{item.pcaCodigo}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{pedidoBordadoCabeceraController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoBordadoCabeceraController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoBordadoCabeceraController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('PedidoBordadoCabeceraListPage:PedidoBordadoCabeceraListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('PedidoBordadoCabeceraListPage:PedidoBordadoCabeceraListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('PedidoBordadoCabeceraListPage:PedidoBordadoCabeceraListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.pcaCodigo}" filterBy="#{item.pcaCodigo}" headerText="#{myBundle.ListPedidoBordadoCabeceraTitle_pcaCodigo}">
+                        <h:outputText value="#{item.pcaCodigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pcaFecha}" filterBy="#{item.pcaFecha}" headerText="#{myBundle.ListPedidoBordadoCabeceraTitle_pcaFecha}">
+                        <h:outputText value="#{item.pcaFecha}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pcaFechaEntrega}" filterBy="#{item.pcaFechaEntrega}" headerText="#{myBundle.ListPedidoBordadoCabeceraTitle_pcaFechaEntrega}">
+                        <h:outputText value="#{item.pcaFechaEntrega}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pcaTotal}" filterBy="#{item.pcaTotal}" headerText="#{myBundle.ListPedidoBordadoCabeceraTitle_pcaTotal}">
+                        <h:outputText value="#{item.pcaTotal}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PedidoBordadoCabeceraEditPage:PedidoBordadoCabeceraEditForm" disabled="#{empty pedidoBordadoCabeceraController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoCabeceraEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{pedidoBordadoCabeceraController.delete}" update=":growl,datalist" disabled="#{empty pedidoBordadoCabeceraController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty pedidoBordadoCabeceraController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.PedidoBordadoCabeceraHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.PedidoBordadoCabeceraMenuItem_borCodigo}" icon="ui-icon-search" update=":BordadorEditPage:BordadorEditForm" disabled="#{empty pedidoBordadoCabeceraController.selected.borCodigo}" actionListener="#{pedidoBordadoCabeceraController.prepareBorCodigo}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:BordadorEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PedidoBordadoCabeceraMenuItem_cliCodigo}" icon="ui-icon-search" update=":ClienteEditPage:ClienteEditForm" disabled="#{empty pedidoBordadoCabeceraController.selected.cliCodigo}" actionListener="#{pedidoBordadoCabeceraController.prepareCliCodigo}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:ClienteEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PedidoBordadoCabeceraMenuItem_disCodigo}" icon="ui-icon-search" update=":DiseniadorEditPage:DiseniadorEditForm" disabled="#{empty pedidoBordadoCabeceraController.selected.disCodigo}" actionListener="#{pedidoBordadoCabeceraController.prepareDisCodigo}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:DiseniadorEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.PedidoBordadoCabeceraMenuItem_pedidoBordadoList}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty pedidoBordadoCabeceraController.selected.pedidoBordadoList}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{pedidoBordadoCabeceraController.navigatePedidoBordadoList()}"/>
+                        </p:menuitem>  
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

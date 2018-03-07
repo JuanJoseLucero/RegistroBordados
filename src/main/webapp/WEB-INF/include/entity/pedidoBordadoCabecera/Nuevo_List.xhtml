@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="PedidoBordadoCabeceraListForm">
+		<p:panelGrid columns="3">
+			<p:outputLabel value="DISEÑADOR" />
+			<p:selectOneMenu id="disCodigo"
+				value="#{pedidoBordadoCabeceraController.pedidoBordadoCabecera.disCodigo}"
+				required="true"
+				requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_disCodigo}"
+				converter="diseniadorConverter" filter="true"
+				filterMatchMode="contains">
+				<f:selectItem itemLabel="#{myBundle.SelectOneMessage}" />
+				<f:selectItems
+					value="#{pedidoBordadoCabeceraController.lstDiseniador}"
+					var="disCodigoItem" itemValue="#{disCodigoItem}"
+					itemLabel="#{disCodigoItem.disCodigo.toString().concat('.- ').concat(disCodigoItem.perCodigo.toString())}" />
+
+			</p:selectOneMenu>
+			<p:commandButton value="NUEVO DISEÑADOR" update=":PersonaCreateForm"
+				actionListener="#{pedidoBordadoCabeceraController.activarDiseniador()}"
+				oncomplete="PF('PersonaCreateDialog').show()" process="@this" />
+			<p:outputLabel value="BORDADOR" />
+			<p:selectOneMenu id="borCodigo"
+				value="#{pedidoBordadoCabeceraController.pedidoBordadoCabecera.borCodigo}"
+				required="true"
+				requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_borCodigo}"
+				converter="bordadorConverter" filter="true"
+				filterMatchMode="contains">
+				<f:selectItem itemLabel="#{myBundle.SelectOneMessage}" />
+				<f:selectItems
+					value="#{pedidoBordadoCabeceraController.lstBordador}"
+					var="borCodigoItem" itemValue="#{borCodigoItem}"
+					itemLabel="#{borCodigoItem.borCodigo.toString().concat('.- ').concat(borCodigoItem.perCodigo.toString())}" />
+
+			</p:selectOneMenu>
+			<p:commandButton value="NUEVO BORDADOR" update=":PersonaCreateForm"
+				actionListener="#{pedidoBordadoCabeceraController.activarBordador()}"
+				oncomplete="PF('PersonaCreateDialog').show()" process="@this"></p:commandButton>
+			<p:outputLabel value="CLIENTE" />
+			<p:selectOneMenu id="cliCodigo"
+				value="#{pedidoBordadoCabeceraController.pedidoBordadoCabecera.cliCodigo}"
+				required="true"
+				requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_cliCodigo}"
+				converter="clienteConverter"
+				filter="true" filterMatchMode="contains">
+				<f:selectItem itemLabel="#{myBundle.SelectOneMessage}" />
+				<f:selectItems value="#{pedidoBordadoCabeceraController.lstCliente}"
+					var="cliCodigoItem" itemValue="#{cliCodigoItem}"
+					itemLabel="#{cliCodigoItem.cliCodigo.toString().concat('.- ').concat(cliCodigoItem.perCodigo.toString())}" />
+			</p:selectOneMenu>
+			<p:commandButton value="NUEVO CLIENTE" update=":PersonaCreateForm"
+				actionListener="#{pedidoBordadoCabeceraController.activarCliente()}"
+				oncomplete="PF('PersonaCreateDialog').show()" process="@this" />
+			<p:outputLabel value="FECHA DE ENTREGA" />
+			<p:calendar id="pcaFechaEntrega" pattern="MM/dd/yyyy"
+				value="#{pedidoBordadoCabeceraController.pedidoBordadoCabecera.pcaFechaEntrega}"
+				title="#{myBundle.CreatePedidoBordadoCabeceraTitle_pcaFechaEntrega}"
+				required="true"
+				requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_pcaFechaEntrega}"
+				showOn="button" />
+			<p:outputLabel value="" />
+			<p:outputLabel value="TOTAL" />
+			<p:outputLabel id="idTotal"
+				value="#{pedidoBordadoCabeceraController.total.toString()}" />
+			<p:outputLabel value="" />
+			<p:outputLabel value="ESTADO" />
+			<p:selectOneMenu id="idEstado"
+				value="#{pedidoBordadoCabeceraController.pedidoBordadoCabecera.pca_estado_pago}">
+				<f:selectItem itemLabel="PENDIENTE" itemValue="0" />
+				<f:selectItem itemLabel="PAGADO" itemValue="1" />
+			</p:selectOneMenu>
+		</p:panelGrid>
+
+		<p:dataTable id="id_detalle_pedido"
+			value="#{pedidoBordadoCabeceraController.lstNueva}" lazy="false"
+			rowKey="#{item.pedCodigo}" var="item" paginator="true"
+			rowIndexVar="rowIndex" rows="10" rowsPerPageTemplate="10,20,30,40,50"
+			selection="#{pedidoBordadoCabeceraController.pedidoBordadoSelecccion}">
+			<p:column headerText="NOMBRE">
+				<h:outputText value="#{item.pedNombreBordado}" />
+			</p:column>
+			<p:column headerText="PUNTADAS">
+				<h:outputText value="#{item.pedPuntadas}" />
+			</p:column>
+			<p:column headerText="VALOR">
+				<h:outputText value="#{item.pedValor}" style="text-align:right" />
+			</p:column>
+			<p:column headerText="CANTIDAD">
+				<h:outputText value="#{item.pedCantidad}" style="text-align:right" />
+			</p:column>
+			<p:column headerText="VALOR UNITARIO">
+				<h:outputText value="#{item.ped_valor_unitario}"
+					style="text-align:right" />
+			</p:column>
+			<p:column headerText="SUBTOTAL">
+				<h:outputText value="#{item.ped_subtotal}" style="text-align:right" />
+			</p:column>
+			<p:column headerText="GANANCIA">
+				<h:outputText value="#{item.ped_ganacia}" style="text-align:right" />
+			</p:column>
+			<p:column headerText="OBSERVACIONES">
+				<h:outputText value="#{item.ped_observaciones}"
+					style="text-align:right" />
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton icon="fa-edit" title="View"
+					oncomplete="PF('PedidoBordadoEditDialog2').show()"
+					update="PedidoBordadoEditForm">
+					<f:setPropertyActionListener value="#{item}"
+						target="#{pedidoBordadoCabeceraController.pedidoBordadoSelecccion}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+		<div id="divBotones">
+			<p:commandButton id="createButton" icon="fa-plus"
+				actionListener="#{pedidoBordadoCabeceraController.prepareCreateDetalle()}"
+				value="AGREGAR FILA" update=":PedidoBordadoCreateForm"
+				oncomplete="PF('PedidoBordadoCreateDialog').show()" />
+			<p:commandButton id="generarContrato" icon="fa-save"
+				actionListener="#{pedidoBordadoCabeceraController.generarContrato()}"
+				value="GENERAR CONTRATO" update=":growl, @form"
+				style="float: right;">
+				<p:confirm header="CREAR CONTRATO"
+					message="¿DESEA GENERAR CONTRATO?" icon="ui-icon-alert" />
+			</p:commandButton>
+		</div>
+		<ui:include src="/WEB-INF/include/confirmation.xhtml" />
+	</h:form>
+</ui:composition>

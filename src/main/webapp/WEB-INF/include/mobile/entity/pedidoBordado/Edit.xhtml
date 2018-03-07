@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoBordadoEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditPedidoBordadoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PedidoBordadoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoBordadoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{pedidoBordadoController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedCodigo}" for="pedCodigo" />
+                            <h:outputText id="pedCodigo" value="#{pedidoBordadoController.selected.pedCodigo}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedNombreBordado}" for="pedNombreBordado" />
+                            <p:inputTextarea rows="4" cols="30" id="pedNombreBordado" value="#{pedidoBordadoController.selected.pedNombreBordado}" title="#{myBundle.EditPedidoBordadoTitle_pedNombreBordado}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedNombreBordado}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedPuntadas}" for="pedPuntadas" />
+                            <p:inputText id="pedPuntadas" value="#{pedidoBordadoController.selected.pedPuntadas}" title="#{myBundle.EditPedidoBordadoTitle_pedPuntadas}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedPuntadas}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedValor}" for="pedValor" />
+                            <p:inputText id="pedValor" value="#{pedidoBordadoController.selected.pedValor}" title="#{myBundle.EditPedidoBordadoTitle_pedValor}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedValor}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedCantidad}" for="pedCantidad" />
+                            <p:inputText id="pedCantidad" value="#{pedidoBordadoController.selected.pedCantidad}" title="#{myBundle.EditPedidoBordadoTitle_pedCantidad}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedCantidad}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pcaCodigo}" for="pcaCodigo" />
+                            <p:selectOneMenu id="pcaCodigo" value="#{pedidoBordadoController.selected.pcaCodigo}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pcaCodigo}" converter="pedidoBordadoCabeceraConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{pedidoBordadoCabeceraController.items}"
+                                               var="pcaCodigoItem"
+                                               itemValue="#{pcaCodigoItem}"
+                                               itemLabel="#{pcaCodigoItem.pcaCodigo.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{pedidoBordadoController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:PedidoBordadoListPage:PedidoBordadoListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

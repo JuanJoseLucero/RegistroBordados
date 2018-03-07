@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoBordadoCabeceraCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreatePedidoBordadoCabeceraTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PedidoBordadoCabeceraListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoBordadoCabeceraCreateForm">
+
+                <h:panelGroup id="display" rendered="#{pedidoBordadoCabeceraController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_pcaFecha}" for="pcaFecha" />
+                            <p:calendar id="pcaFecha" pattern="MM/dd/yyyy" value="#{pedidoBordadoCabeceraController.selected.pcaFecha}" title="#{myBundle.CreatePedidoBordadoCabeceraTitle_pcaFecha}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_pcaFecha}" showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_pcaFechaEntrega}" for="pcaFechaEntrega" />
+                            <p:calendar id="pcaFechaEntrega" pattern="MM/dd/yyyy" value="#{pedidoBordadoCabeceraController.selected.pcaFechaEntrega}" title="#{myBundle.CreatePedidoBordadoCabeceraTitle_pcaFechaEntrega}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_pcaFechaEntrega}" showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_pcaTotal}" for="pcaTotal" />
+                            <p:inputText id="pcaTotal" value="#{pedidoBordadoCabeceraController.selected.pcaTotal}" title="#{myBundle.CreatePedidoBordadoCabeceraTitle_pcaTotal}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_borCodigo}" for="borCodigo" />
+                            <p:selectOneMenu id="borCodigo" value="#{pedidoBordadoCabeceraController.selected.borCodigo}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_borCodigo}" converter="bordadorConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{bordadorController.items}"
+                                               var="borCodigoItem"
+                                               itemValue="#{borCodigoItem}"
+                                               itemLabel="#{borCodigoItem.borCodigo.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_cliCodigo}" for="cliCodigo" />
+                            <p:selectOneMenu id="cliCodigo" value="#{pedidoBordadoCabeceraController.selected.cliCodigo}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_cliCodigo}" converter="clienteConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{clienteController.items}"
+                                               var="cliCodigoItem"
+                                               itemValue="#{cliCodigoItem}"
+                                               itemLabel="#{cliCodigoItem.cliCodigo.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePedidoBordadoCabeceraLabel_disCodigo}" for="disCodigo" />
+                            <p:selectOneMenu id="disCodigo" value="#{pedidoBordadoCabeceraController.selected.disCodigo}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_disCodigo}" converter="diseniadorConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{diseniadorController.items}"
+                                               var="disCodigoItem"
+                                               itemValue="#{disCodigoItem}"
+                                               itemLabel="#{disCodigoItem.disCodigo.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{pedidoBordadoCabeceraController.saveNew}" value="#{myBundle.Save}" update="display,:PedidoBordadoCabeceraListPage:PedidoBordadoCabeceraListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoCabeceraListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

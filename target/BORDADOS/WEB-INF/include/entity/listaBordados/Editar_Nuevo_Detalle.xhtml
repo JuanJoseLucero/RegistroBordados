@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PedidoBordadoCreateDlg" widgetVar="PedidoBordadoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreatePedidoBordadoTitle}" closeOnEscape="true">
+            <h:form id="PedidoBordadoCreateForm">
+				<p:remoteCommand name="calcular" actionListener="#{listadoBordadoController.calcularEnCaliente()}" 
+					update="PedidoBordadoCreateForm:valorUnitario,PedidoBordadoCreateForm:subTotal"/>
+                <h:panelGroup id="display" rendered="#{listadoBordadoController.detalleSeleccion != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+                        <p:outputLabel value="#{myBundle.CreatePedidoBordadoLabel_pedNombreBordado}" for="pedNombreBordado" />
+                        <p:inputText id="pedNombreBordado" value="#{listadoBordadoController.detalleSeleccion.pedNombreBordado}" style="text-transform:uppercase;"
+                        	title="#{myBundle.CreatePedidoBordadoTitle_pedNombreBordado}" required="true" requiredMessage="#{myBundle.CreatePedidoBordadoRequiredMessage_pedNombreBordado}"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePedidoBordadoLabel_pedPuntadas}" for="pedPuntadas" />
+                        <p:inputNumber id="pedPuntadas" value="#{listadoBordadoController.detalleSeleccion.pedPuntadas}" decimalPlaces="0"
+                        	title="#{myBundle.CreatePedidoBordadoTitle_pedPuntadas}" requiredMessage="#{myBundle.CreatePedidoBordadoRequiredMessage_pedPuntadas}"
+                        	onkeyup="calcular()" />
+
+                        <p:outputLabel value="#{myBundle.CreatePedidoBordadoLabel_pedValor}" for="pedValor" />
+                        <p:inputNumber id="pedValor" value="#{listadoBordadoController.detalleSeleccion.pedValor}"  decimalPlaces="2" padControl="true" thousandSeparator="," decimalSeparator="."
+                        	title="#{myBundle.CreatePedidoBordadoTitle_pedValor}" requiredMessage="#{myBundle.CreatePedidoBordadoRequiredMessage_pedValor}"
+                        	onkeyup="calcular()"/>
+
+                        <p:outputLabel value="#{myBundle.CreatePedidoBordadoLabel_pedCantidad}" for="pedCantidad" />
+                        <p:inputNumber id="pedCantidad" value="#{listadoBordadoController.detalleSeleccion.pedCantidad}" decimalPlaces="0" 
+                        	title="#{myBundle.CreatePedidoBordadoTitle_pedCantidad}"  requiredMessage="#{myBundle.CreatePedidoBordadoRequiredMessage_pedCantidad}"
+                        	onkeyup="calcular()"/>
+                        	
+                        <p:outputLabel value="#{myBundle.valorUnitario}" for="valorUnitario" />
+                        <p:outputLabel id="valorUnitario" value="#{listadoBordadoController.detalleSeleccion.ped_valor_unitario}" />
+                        
+                        <p:outputLabel value="#{myBundle.valorSubtotal}" for="subTotal" />
+                        <p:outputLabel id="subTotal" value="#{listadoBordadoController.detalleSeleccion.ped_subtotal}" />
+                        
+                        <p:outputLabel value="#{myBundle.valorGanancia}" for="pedGanancia" />
+                        <p:inputNumber id="pedGanancia" value="#{listadoBordadoController.detalleSeleccion.ped_ganacia}" thousandSeparator="," decimalSeparator="."  decimalPlaces="2" padControl="true"
+                        	title="#{myBundle.valorGanancia}"  requiredMessage="#{myBundle.CreatePedidoBordadoRequiredMessage_pedCantidad}"
+                        	onkeyup="calcular()"/>
+                        	
+						<p:outputLabel value="#{myBundle.observaciones}" for="observaciones"/>
+						<p:inputTextarea id ="observaciones" cols="50" rows="3" value="#{listadoBordadoController.detalleSeleccion.ped_observaciones}"  style="text-transform:uppercase;"/>
+                    </p:panelGrid>
+						<p:commandButton actionListener="#{pedidoBordadoCabeceraController.crearPedidoDetalle()}"  update ="display,:PedidoBordadoCabeceraListForm:id_detalle_pedido,:PedidoBordadoCabeceraListForm:idTotal" value="#{myBundle.Save}" oncomplete="handleSubmit(xhr,status,args,PF('PedidoBordadoCreateDialog'));"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

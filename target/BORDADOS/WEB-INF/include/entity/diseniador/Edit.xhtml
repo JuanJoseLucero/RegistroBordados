@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DiseniadorEditDlg" widgetVar="DiseniadorEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditDiseniadorTitle}" closeOnEscape="true">
+
+            <h:form id="DiseniadorEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{diseniadorController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditDiseniadorLabel_disCodigo}" for="disCodigo" />
+                        <h:outputText id="disCodigo" value="#{diseniadorController.selected.disCodigo}" />
+
+                        <p:outputLabel value="#{myBundle.EditDiseniadorLabel_disCaducado}" for="disCaducado" />
+                        <p:calendar id="disCaducado" pattern="MM/dd/yyyy" value="#{diseniadorController.selected.disCaducado}" title="#{myBundle.EditDiseniadorTitle_disCaducado}" required="true" requiredMessage="#{myBundle.EditDiseniadorRequiredMessage_disCaducado}" showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditDiseniadorLabel_perCodigo}" for="perCodigo" />
+                        <p:selectOneMenu id="perCodigo" value="#{diseniadorController.selected.perCodigo}" required="true" requiredMessage="#{myBundle.EditDiseniadorRequiredMessage_perCodigo}" converter="personaConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{personaController.items}"
+                                           var="perCodigoItem"
+                                           itemValue="#{perCodigoItem}"
+                                           itemLabel="#{perCodigoItem.perCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{diseniadorController.save}" value="#{myBundle.Save}" update="display,:DiseniadorListForm:datalist,:DiseniadorListForm:DiseniadorDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DiseniadorEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DiseniadorEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

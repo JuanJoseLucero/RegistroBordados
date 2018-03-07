@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PedidoBordadoCabeceraEditDlg" widgetVar="PedidoBordadoCabeceraEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditPedidoBordadoCabeceraTitle}" closeOnEscape="true">
+
+            <h:form id="PedidoBordadoCabeceraEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{pedidoBordadoCabeceraController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_pcaCodigo}" for="pcaCodigo" />
+                        <h:outputText id="pcaCodigo" value="#{pedidoBordadoCabeceraController.selected.pcaCodigo}" />
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_pcaFecha}" for="pcaFecha" />
+                        <p:calendar id="pcaFecha" pattern="MM/dd/yyyy" value="#{pedidoBordadoCabeceraController.selected.pcaFecha}" title="#{myBundle.EditPedidoBordadoCabeceraTitle_pcaFecha}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoCabeceraRequiredMessage_pcaFecha}" showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_pcaFechaEntrega}" for="pcaFechaEntrega" />
+                        <p:calendar id="pcaFechaEntrega" pattern="MM/dd/yyyy" value="#{pedidoBordadoCabeceraController.selected.pcaFechaEntrega}" title="#{myBundle.EditPedidoBordadoCabeceraTitle_pcaFechaEntrega}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoCabeceraRequiredMessage_pcaFechaEntrega}" showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_pcaTotal}" for="pcaTotal" />
+                        <p:inputText id="pcaTotal" value="#{pedidoBordadoCabeceraController.selected.pcaTotal}" title="#{myBundle.EditPedidoBordadoCabeceraTitle_pcaTotal}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_borCodigo}" for="borCodigo" />
+                        <p:selectOneMenu id="borCodigo" value="#{pedidoBordadoCabeceraController.selected.borCodigo}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoCabeceraRequiredMessage_borCodigo}" converter="bordadorConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{bordadorController.items}"
+                                           var="borCodigoItem"
+                                           itemValue="#{borCodigoItem}"
+                                           itemLabel="#{borCodigoItem.borCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_cliCodigo}" for="cliCodigo" />
+                        <p:selectOneMenu id="cliCodigo" value="#{pedidoBordadoCabeceraController.selected.cliCodigo}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoCabeceraRequiredMessage_cliCodigo}" converter="clienteConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{clienteController.items}"
+                                           var="cliCodigoItem"
+                                           itemValue="#{cliCodigoItem}"
+                                           itemLabel="#{cliCodigoItem.cliCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoCabeceraLabel_disCodigo}" for="disCodigo" />
+                        <p:selectOneMenu id="disCodigo" value="#{pedidoBordadoCabeceraController.selected.disCodigo}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoCabeceraRequiredMessage_disCodigo}" converter="diseniadorConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{diseniadorController.items}"
+                                           var="disCodigoItem"
+                                           itemValue="#{disCodigoItem}"
+                                           itemLabel="#{disCodigoItem.disCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+<!--                     <p:commandButton actionListener="#{pedidoBordadoCabeceraController.save}" value="#{myBundle.Save}" update="display,:PedidoBordadoCabeceraListForm:datalist,:PedidoBordadoCabeceraListForm:PedidoBordadoCabeceraDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PedidoBordadoCabeceraEditDialog'));"> -->
+<!--                         <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/> -->
+<!--                     </p:commandButton> -->
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('PedidoBordadoCabeceraEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

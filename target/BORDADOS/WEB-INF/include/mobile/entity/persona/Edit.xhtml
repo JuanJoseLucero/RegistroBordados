@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PersonaEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditPersonaTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PersonaListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PersonaEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{personaController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditPersonaLabel_perCodigo}" for="perCodigo" />
+                            <h:outputText id="perCodigo" value="#{personaController.selected.perCodigo}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perNombre}" for="perNombre" />
+                            <p:inputTextarea rows="4" cols="30" id="perNombre" value="#{personaController.selected.perNombre}" title="#{myBundle.EditPersonaTitle_perNombre}" required="true" requiredMessage="#{myBundle.EditPersonaRequiredMessage_perNombre}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perApellido}" for="perApellido" />
+                            <p:inputTextarea rows="4" cols="30" id="perApellido" value="#{personaController.selected.perApellido}" title="#{myBundle.EditPersonaTitle_perApellido}" required="true" requiredMessage="#{myBundle.EditPersonaRequiredMessage_perApellido}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perTelefono}" for="perTelefono" />
+                            <p:inputTextarea rows="4" cols="30" id="perTelefono" value="#{personaController.selected.perTelefono}" title="#{myBundle.EditPersonaTitle_perTelefono}" required="true" requiredMessage="#{myBundle.EditPersonaRequiredMessage_perTelefono}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perDireccion}" for="perDireccion" />
+                            <p:inputTextarea rows="4" cols="30" id="perDireccion" value="#{personaController.selected.perDireccion}" title="#{myBundle.EditPersonaTitle_perDireccion}" required="true" requiredMessage="#{myBundle.EditPersonaRequiredMessage_perDireccion}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perEmail}" for="perEmail" />
+                            <p:inputTextarea rows="4" cols="30" id="perEmail" value="#{personaController.selected.perEmail}" title="#{myBundle.EditPersonaTitle_perEmail}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditPersonaLabel_perFcaducado}" for="perFcaducado" />
+                            <p:calendar id="perFcaducado" pattern="MM/dd/yyyy" value="#{personaController.selected.perFcaducado}" title="#{myBundle.EditPersonaTitle_perFcaducado}" required="true" requiredMessage="#{myBundle.EditPersonaRequiredMessage_perFcaducado}" showOn="button"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{personaController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:PersonaListPage:PersonaListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:PersonaListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

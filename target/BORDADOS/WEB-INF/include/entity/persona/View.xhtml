@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonaViewDlg" widgetVar="PersonaViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewPersonaTitle}" closeOnEscape="true">
+
+            <h:form id="PersonaViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{personaController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perCodigo}"/>
+                        <h:outputText value="#{personaController.selected.perCodigo}" title="#{myBundle.ViewPersonaTitle_perCodigo}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perNombre}"/>
+                        <h:outputText value="#{personaController.selected.perNombre}" title="#{myBundle.ViewPersonaTitle_perNombre}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perApellido}"/>
+                        <h:outputText value="#{personaController.selected.perApellido}" title="#{myBundle.ViewPersonaTitle_perApellido}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perTelefono}"/>
+                        <h:outputText value="#{personaController.selected.perTelefono}" title="#{myBundle.ViewPersonaTitle_perTelefono}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perDireccion}"/>
+                        <h:outputText value="#{personaController.selected.perDireccion}" title="#{myBundle.ViewPersonaTitle_perDireccion}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perEmail}"/>
+                        <h:outputText value="#{personaController.selected.perEmail}" title="#{myBundle.ViewPersonaTitle_perEmail}"/>
+
+                        <h:outputText value="#{myBundle.ViewPersonaLabel_perFcaducado}"/>
+                        <h:outputText value="#{personaController.selected.perFcaducado}" title="#{myBundle.ViewPersonaTitle_perFcaducado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('PersonaViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

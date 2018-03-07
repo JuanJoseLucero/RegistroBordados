@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PersonaCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreatePersonaTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:PersonaListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PersonaCreateForm">
+
+                <h:panelGroup id="display" rendered="#{personaController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perNombre}" for="perNombre" />
+                            <p:inputTextarea rows="4" cols="30" id="perNombre" value="#{personaController.selected.perNombre}" title="#{myBundle.CreatePersonaTitle_perNombre}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perNombre}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perApellido}" for="perApellido" />
+                            <p:inputTextarea rows="4" cols="30" id="perApellido" value="#{personaController.selected.perApellido}" title="#{myBundle.CreatePersonaTitle_perApellido}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perApellido}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perTelefono}" for="perTelefono" />
+                            <p:inputTextarea rows="4" cols="30" id="perTelefono" value="#{personaController.selected.perTelefono}" title="#{myBundle.CreatePersonaTitle_perTelefono}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perTelefono}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perDireccion}" for="perDireccion" />
+                            <p:inputTextarea rows="4" cols="30" id="perDireccion" value="#{personaController.selected.perDireccion}" title="#{myBundle.CreatePersonaTitle_perDireccion}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perDireccion}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perEmail}" for="perEmail" />
+                            <p:inputTextarea rows="4" cols="30" id="perEmail" value="#{personaController.selected.perEmail}" title="#{myBundle.CreatePersonaTitle_perEmail}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreatePersonaLabel_perFcaducado}" for="perFcaducado" />
+                            <p:calendar id="perFcaducado" pattern="MM/dd/yyyy" value="#{personaController.selected.perFcaducado}" title="#{myBundle.CreatePersonaTitle_perFcaducado}" required="true" requiredMessage="#{myBundle.CreatePersonaRequiredMessage_perFcaducado}" showOn="button"/>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{personaController.saveNew}" value="#{myBundle.Save}" update="display,:PersonaListPage:PersonaListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:PersonaListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="ListaBordadoForm">
+		<p:remoteCommand actionListener="#{listadoBordadoController.obtenerRegistros()}" update="ListaBordadoForm:id_detalle_pedido, growl,ListaBordadoForm:pendientes,ListaBordadoForm:cancelado" name="actualizar"/>
+		<p:panelGrid columns="2">
+			<p:outputLabel value="CLIENTE" />
+			<p:selectOneMenu id="cliCodigo" onchange="actualizar()"
+				value="#{listadoBordadoController.clienteSelected}"
+				required="true"
+				requiredMessage="#{myBundle.CreatePedidoBordadoCabeceraRequiredMessage_cliCodigo}"
+				converter="clienteConverter">
+				<f:selectItem itemLabel="#{myBundle.SelectOneMessage}" />
+				<f:selectItems value="#{listadoBordadoController.lstCliente}"
+					var="cliCodigoItem" itemValue="#{cliCodigoItem}"
+					itemLabel="#{cliCodigoItem.cliCodigo.toString().concat('.- ').concat(cliCodigoItem.perCodigo.toString())}" />
+			</p:selectOneMenu>
+			<p:outputLabel value="TOTAL ADEUDADO" />
+			<p:outputLabel id="pendientes" value="#{listadoBordadoController.totalPendientes}" />
+			<p:outputLabel value="TOTAL CANCELADO" />
+			<p:outputLabel id="cancelado" value="#{listadoBordadoController.totalCancelado}" />
+		</p:panelGrid>
+		<p:dataTable id="id_detalle_pedido" lazy="true" paginator="true"
+			rowIndexVar="rowIndex" rowKey="#{item.pcaCodigo}" rows="10"
+			rowsPerPageTemplate="10,20,30,40,50"
+			value="#{listadoBordadoController.listadoBordadoModel.lstCabeceras}"
+			var="item">
+			<p:column headerText="CODIGO">
+				<h:outputText value="#{item.pcaCodigo}" />
+			</p:column>
+			<p:column headerText="CLIENTE">
+				<h:outputText
+					value="#{item.cliCodigo.perCodigo.perNombre.concat(' ').concat(item.cliCodigo.perCodigo.perApellido)}" style="text-transform:uppercase;"/>
+			</p:column>
+			<p:column headerText="BORDADOS">
+				<p:repeat var="var" value="#{item.pedidoBordadoList}">
+					<h:outputText value="#{var.pedNombreBordado}" />
+					<br />
+				</p:repeat>
+			</p:column>
+			<p:column headerText="FECHA ENTREGA">
+				<h:outputText value="#{item.pcaFechaEntrega}" />
+			</p:column>
+			<p:column headerText="TOTAL">
+				<h:outputText value="#{item.pcaTotal}" />
+			</p:column>
+			<p:column headerText="ESTADO">
+				<h:outputText value="#{item.pca_estado_pago eq '0'?'PENDIENTE':'CANCELADO' }" />
+			</p:column>
+			<p:column style="width:32px;text-align: center">
+				<p:commandButton icon="fa-edit" title="View"
+					oncomplete="PF('EditPedidoDialog').show()"
+					update="PedidoBordadoCabeceraListForm">
+					<f:setPropertyActionListener value="#{item}"
+						target="#{listadoBordadoController.cabeceraSeleccion}" />
+				</p:commandButton>
+			</p:column>
+		</p:dataTable>
+		<ui:include src="/WEB-INF/include/confirmation.xhtml" />
+	</h:form>
+</ui:composition>

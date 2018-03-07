@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="BordadorEditPage" lazy="true">
+        <pm:header title="#{myBundle.EditBordadorTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:BordadorListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="BordadorEditForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{bordadorController.selected != null}">
+
+                        <pm:field>
+                            <h:outputLabel value="#{myBundle.EditBordadorLabel_borCodigo}" for="borCodigo" />
+                            <h:outputText id="borCodigo" value="#{bordadorController.selected.borCodigo}" />
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditBordadorLabel_borCaducado}" for="borCaducado" />
+                            <p:calendar id="borCaducado" pattern="MM/dd/yyyy" value="#{bordadorController.selected.borCaducado}" title="#{myBundle.EditBordadorTitle_borCaducado}" required="true" requiredMessage="#{myBundle.EditBordadorRequiredMessage_borCaducado}" showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.EditBordadorLabel_perCodigo}" for="perCodigo" />
+                            <p:selectOneMenu id="perCodigo" value="#{bordadorController.selected.perCodigo}" required="true" requiredMessage="#{myBundle.EditBordadorRequiredMessage_perCodigo}" converter="personaConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{personaController.items}"
+                                               var="perCodigoItem"
+                                               itemValue="#{perCodigoItem}"
+                                               itemLabel="#{perCodigoItem.perCodigo.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{bordadorController.save}" value="#{myBundle.Save}" update="#{mobilePageController.updatableWidgets(component,'display,:BordadorListPage:BordadorListForm:datalist,:growl')}" action="#{mobilePageController.navigateWithHistory('pm:BordadorListPage')}">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

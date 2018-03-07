@@ -1,0 +1,57 @@
+package ec.fin.coopjep.canalesvirtuales.utilCV.DB;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import ec.fin.coopjep.serviciosenlinea.util.bd.Propiedades;
+
+@Named
+@RequestScoped
+public class DBConnectCV {
+	
+	private Connection connection;
+	private DataSource ds;
+	@Inject
+	private Propiedades propiedades;
+
+	public DBConnectCV() {
+		super();
+	}
+	
+	@PostConstruct
+	public void afterCreate() {
+		InitialContext ic;
+		try {
+			ic = new InitialContext();
+			ds = (DataSource) ic.lookup(propiedades.getPropiedadDS("CANALESVIRTUALES"));
+		} catch (NamingException | IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public Connection getConnection() {
+		try
+		{
+			connection = ds.getConnection();
+			return connection;
+		} catch (SQLException sql) {
+			sql.printStackTrace();
+			return null;
+		}
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+}

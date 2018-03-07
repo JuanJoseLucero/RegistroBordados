@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="DiseniadorListPage">
+        <pm:header title="#{myBundle.ListDiseniadorTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":DiseniadorCreatePage:DiseniadorCreateForm" actionListener="#{diseniadorController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:DiseniadorCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="DiseniadorListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{diseniadorController.items}"
+                             var="item"
+                             rowKey="#{item.disCodigo}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{diseniadorController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{diseniadorController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{diseniadorController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('DiseniadorListPage:DiseniadorListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('DiseniadorListPage:DiseniadorListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('DiseniadorListPage:DiseniadorListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.disCodigo}" filterBy="#{item.disCodigo}" headerText="#{myBundle.ListDiseniadorTitle_disCodigo}">
+                        <h:outputText value="#{item.disCodigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.disCaducado}" filterBy="#{item.disCaducado}" headerText="#{myBundle.ListDiseniadorTitle_disCaducado}">
+                        <h:outputText value="#{item.disCaducado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":DiseniadorEditPage:DiseniadorEditForm" disabled="#{empty diseniadorController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:DiseniadorEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{diseniadorController.delete}" update=":growl,datalist" disabled="#{empty diseniadorController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty diseniadorController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.DiseniadorHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.DiseniadorMenuItem_perCodigo}" icon="ui-icon-search" update=":PersonaEditPage:PersonaEditForm" disabled="#{empty diseniadorController.selected.perCodigo}" actionListener="#{diseniadorController.preparePerCodigo}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PersonaEditPage"/>
+                        </p:menuitem>
+                        <p:menuitem value="#{myBundle.DiseniadorMenuItem_pedidoBordadoCabeceraList}" icon="ui-icon-search"  action="#{mobilePageController.navigateWithHistory}" disabled="#{empty diseniadorController.selected.pedidoBordadoCabeceraList}" ajax="false">
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="#{diseniadorController.navigatePedidoBordadoCabeceraList()}"/>
+                        </p:menuitem>  
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

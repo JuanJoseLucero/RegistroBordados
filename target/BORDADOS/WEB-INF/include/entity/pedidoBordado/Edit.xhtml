@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PedidoBordadoEditDlg" widgetVar="PedidoBordadoEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditPedidoBordadoTitle}" closeOnEscape="true">
+
+            <h:form id="PedidoBordadoEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{pedidoBordadoController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedCodigo}" for="pedCodigo" />
+                        <h:outputText id="pedCodigo" value="#{pedidoBordadoController.selected.pedCodigo}" />
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedNombreBordado}" for="pedNombreBordado" />
+                        <p:inputTextarea rows="4" cols="30" id="pedNombreBordado" value="#{pedidoBordadoController.selected.pedNombreBordado}" title="#{myBundle.EditPedidoBordadoTitle_pedNombreBordado}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedNombreBordado}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedPuntadas}" for="pedPuntadas" />
+                        <p:inputText id="pedPuntadas" value="#{pedidoBordadoController.selected.pedPuntadas}" title="#{myBundle.EditPedidoBordadoTitle_pedPuntadas}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedPuntadas}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedValor}" for="pedValor" />
+                        <p:inputText id="pedValor" value="#{pedidoBordadoController.selected.pedValor}" title="#{myBundle.EditPedidoBordadoTitle_pedValor}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedValor}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pedCantidad}" for="pedCantidad" />
+                        <p:inputText id="pedCantidad" value="#{pedidoBordadoController.selected.pedCantidad}" title="#{myBundle.EditPedidoBordadoTitle_pedCantidad}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pedCantidad}"/>
+
+                        <p:outputLabel value="#{myBundle.EditPedidoBordadoLabel_pcaCodigo}" for="pcaCodigo" />
+                        <p:selectOneMenu id="pcaCodigo" value="#{pedidoBordadoController.selected.pcaCodigo}" required="true" requiredMessage="#{myBundle.EditPedidoBordadoRequiredMessage_pcaCodigo}" converter="pedidoBordadoCabeceraConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{pedidoBordadoCabeceraController.items}"
+                                           var="pcaCodigoItem"
+                                           itemValue="#{pcaCodigoItem}"
+                                           itemLabel="#{pcaCodigoItem.pcaCodigo.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pedidoBordadoController.save}" value="#{myBundle.Save}" update="display,:PedidoBordadoListForm:datalist,:PedidoBordadoListForm:PedidoBordadoDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PedidoBordadoEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('PedidoBordadoEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

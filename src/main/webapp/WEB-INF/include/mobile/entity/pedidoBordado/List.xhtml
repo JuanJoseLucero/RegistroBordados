@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="PedidoBordadoListPage">
+        <pm:header title="#{myBundle.ListPedidoBordadoTitle}">
+            <h:form>
+                <p:commandButton id="backButton"   styleClass="ui-btn-left  ui-btn-inline" icon="ui-icon-arrow-l" value="#{myBundle.Back}" action="#{mobilePageController.navigateBackInHistory('/mobile/index')}"/>
+                <p:commandButton id="createButton" styleClass="ui-btn-right ui-btn-inline" icon="ui-icon-plus"    value="#{myBundle.Create}" update=":PedidoBordadoCreatePage:PedidoBordadoCreateForm" actionListener="#{pedidoBordadoController.prepareCreate}" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoCreatePage')}">
+                    <f:actionListener binding="#{currentPageListener}"/>
+                </p:commandButton>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="PedidoBordadoListForm">
+
+                <p:dataTable id="datalist"
+                             value="#{pedidoBordadoController.items}"
+                             var="item"
+                             rowKey="#{item.pedCodigo}"
+                             paginator="true"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{pedidoBordadoController.selected}"
+                             reflow="true">
+
+                    <p:ajax event="rowSelect"   update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoBordadoController.resetParents}"/>
+                    <p:ajax event="rowUnselect" update="@form:editButton,@form:deleteButton,@form:navigationMenuButton,@form:navigationMenuPanel" listener="#{pedidoBordadoController.resetParents}"/>
+                    <p:ajax event="swipeleft"   oncomplete="document.getElementById('PedidoBordadoListPage:PedidoBordadoListForm:deleteButton').click();"/>
+                    <p:ajax event="tap"         oncomplete="document.getElementById('PedidoBordadoListPage:PedidoBordadoListForm:editButton').click();"/>
+                    <p:ajax event="taphold"     oncomplete="document.getElementById('PedidoBordadoListPage:PedidoBordadoListForm:navigationMenuButton').click();"/>
+
+                    <p:column sortBy="#{item.pedCodigo}" filterBy="#{item.pedCodigo}" headerText="#{myBundle.ListPedidoBordadoTitle_pedCodigo}">
+                        <h:outputText value="#{item.pedCodigo}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pedNombreBordado}" filterBy="#{item.pedNombreBordado}" headerText="#{myBundle.ListPedidoBordadoTitle_pedNombreBordado}">
+                        <h:outputText value="#{item.pedNombreBordado}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pedPuntadas}" filterBy="#{item.pedPuntadas}" headerText="#{myBundle.ListPedidoBordadoTitle_pedPuntadas}">
+                        <h:outputText value="#{item.pedPuntadas}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pedValor}" filterBy="#{item.pedValor}" headerText="#{myBundle.ListPedidoBordadoTitle_pedValor}">
+                        <h:outputText value="#{item.pedValor}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.pedCantidad}" filterBy="#{item.pedCantidad}" headerText="#{myBundle.ListPedidoBordadoTitle_pedCantidad}">
+                        <h:outputText value="#{item.pedCantidad}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":PedidoBordadoEditPage:PedidoBordadoEditForm" disabled="#{empty pedidoBordadoController.selected}" actionListener="#{mobilePageController.currentPageListener}" action="#{mobilePageController.navigateWithHistory('pm:PedidoBordadoEditPage')}"/>
+                <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{pedidoBordadoController.delete}" update=":growl,datalist" disabled="#{empty pedidoBordadoController.selected}">
+                    <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+                </p:commandButton>
+                <p:commandButton id="navigationMenuButton" style="visibility: hidden;" value="#{myBundle.Menu}" disabled="#{empty pedidoBordadoController.selected}"/>
+
+                <p:overlayPanel id="navigationMenuPanel" for="navigationMenuButton" at="right" showEffect="overlay">
+                    <h2>#{myBundle.PedidoBordadoHeading} #{myBundle.Menu}</h2>
+                    <p:menu>
+                        <p:menuitem value="#{myBundle.PedidoBordadoMenuItem_pcaCodigo}" icon="ui-icon-search" update=":PedidoBordadoCabeceraEditPage:PedidoBordadoCabeceraEditForm" disabled="#{empty pedidoBordadoController.selected.pcaCodigo}" actionListener="#{pedidoBordadoController.preparePcaCodigo}" action="#{mobilePageController.navigateWithHistory}">  
+                            <f:actionListener binding="#{currentPageActionListener}"/>
+                            <f:setPropertyActionListener target="#{mobilePageController.nextPage}" value="pm:PedidoBordadoCabeceraEditPage"/>
+                        </p:menuitem>
+                    </p:menu>
+                </p:overlayPanel>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>
